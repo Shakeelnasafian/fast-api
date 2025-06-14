@@ -57,12 +57,17 @@ def update_car(session : Annotated[Session, Depends(get_session)], id: int, new_
     else:
         raise HTTPException(status_code=404, detail="Car not found")
 
+class BadTripException(Exception):
+     pass
+
 @router.post("/{car_id}/trips")
 def add_trip(session: Annotated[Session, Depends(get_session)],
              car_id: int, trip_input: TripInput) -> Trip:
     car = session.get(Car, car_id)
     if car:
         new_trip = Trip.model_validate(trip_input, update={'car_id': car_id})
+        if new_trip.start >= new_trip.end:
+            raise BadTripException("Trip start time must be before end time.")
         car.trips.append(new_trip)
         session.commit()
         session.refresh(new_trip)
