@@ -7,6 +7,10 @@ class UserOutput(SQLModel):
     id: int
     username: str
 
+class UserCreate(SQLModel):
+    username: str
+    password: str
+
 class User(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     username: str = Field(sa_column=Column("username", VARCHAR, unique=True, index=True))

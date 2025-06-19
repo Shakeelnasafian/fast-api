@@ -13,7 +13,7 @@ from schemas import User
 logging.getLogger('passlib').setLevel(logging.ERROR)
 
 engine = create_engine(
-    "sqlite:///carsharing.db",
+    "sqlite:///cars.db",
     connect_args={"check_same_thread": False},  # Needed for SQLite
     echo=True # Log generated SQL
 )

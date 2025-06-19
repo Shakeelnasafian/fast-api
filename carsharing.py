@@ -1,7 +1,7 @@
 import uvicorn
 from db import engine
 from sqlmodel import SQLModel
-from routers import cars, web
+from routers import cars, web, auth
 from routers.cars import BadTripException
 from contextlib import asynccontextmanager
 from fastapi.responses import JSONResponse
@@ -14,8 +14,9 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(title="Car Sharing API", lifespan=lifespan)
-app.include_router(cars.router) 
+app.include_router(cars.router)
 app.include_router(web.router)
+app.include_router(auth.router)
 
 origins = [
     "http://localhost:8000",
